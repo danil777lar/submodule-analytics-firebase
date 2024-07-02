@@ -22,12 +22,14 @@ namespace Larje.Analytics.Firebase
         [SerializeField] private string intKey = "larje_key_num";
         [SerializeField] private string jsonKey = "larje_key_json";
         [SerializeField] private string boolKey = "larje_key_bool";
+
+        [InjectService] private DataService _dataService;
         
         private DependencyStatus _dependencyStatus = DependencyStatus.UnavailableOther;
         
         public override void Init()
         {
-
+            
         }
 
         public void SendEvent(string eventName)
@@ -35,7 +37,6 @@ namespace Larje.Analytics.Firebase
             FirebaseAnalytics.LogEvent(eventName);
             Debug.Log($"<color=yellow>{eventName}</color>");
         }
-
 
         public void FetchFirebase()
         {
@@ -64,6 +65,16 @@ namespace Larje.Analytics.Firebase
                 Debug.Log(key);
             }
         }
+        
+        public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
+        {
+            Debug.Log("Received Registration Token: " + token.Token);
+        }
+
+        public void OnMessageReceived(object sender, MessageReceivedEventArgs message)
+        {
+            Debug.Log("Received a new message from: " + message.Message.From);
+        }
 
         private void Awake()
         {
@@ -73,6 +84,7 @@ namespace Larje.Analytics.Firebase
         private void Start()
         {
             InitializeFirebase();
+            SendEvent($"Start_Session_{_dataService.Data.IternalData.SessionNum}");
         }
 
         private void InitializeFirebase()
@@ -176,16 +188,6 @@ namespace Larje.Analytics.Firebase
                     Debug.Log("Latest Fetch call still pending.");
                     break;
             }
-        }
-
-        public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
-        {
-            Debug.Log("Received Registration Token: " + token.Token);
-        }
-
-        public void OnMessageReceived(object sender, MessageReceivedEventArgs message)
-        {
-            Debug.Log("Received a new message from: " + message.Message.From);
         }
     }
 }
