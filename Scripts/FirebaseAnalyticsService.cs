@@ -7,6 +7,7 @@ using Firebase.Messaging;
 using Firebase.Analytics;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
+using Larje.Core;
 using Larje.Core.Services;
 using UnityEngine;
 
