@@ -35,8 +35,15 @@ namespace Larje.Analytics.Firebase
 
         public void SendEvent(string eventName)
         {
-            FirebaseAnalytics.LogEvent(eventName);
-            Debug.Log($"<color=yellow>{eventName}</color>");
+            try
+            {
+                FirebaseAnalytics.LogEvent(eventName);
+                Debug.Log($"<color=yellow>{eventName}</color>");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"<color=red>{e.Message}</color>");
+            }
         }
 
         public void FetchFirebase()
@@ -89,24 +96,31 @@ namespace Larje.Analytics.Firebase
 
         private void InitializeFirebase()
         {
-            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+            try
             {
-                _dependencyStatus = task.Result;
-                if (_dependencyStatus == DependencyStatus.Available)
+                FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
                 {
-                    OnFirebaseInitialized();
-                    if(useCloudMessaging)
+                    _dependencyStatus = task.Result;
+                    if (_dependencyStatus == DependencyStatus.Available)
                     {
-                        FirebaseMessaging.TokenReceived += OnTokenReceived;
-                        FirebaseMessaging.MessageReceived += OnMessageReceived;
+                        OnFirebaseInitialized();
+                        if (useCloudMessaging)
+                        {
+                            FirebaseMessaging.TokenReceived += OnTokenReceived;
+                            FirebaseMessaging.MessageReceived += OnMessageReceived;
+                        }
                     }
-                }
-                else
-                {
-                    Debug.LogError(
-                        "Could not resolve all Firebase dependencies: " + _dependencyStatus);
-                }
-            });
+                    else
+                    {
+                        Debug.LogError(
+                            "Could not resolve all Firebase dependencies: " + _dependencyStatus);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"<color=red>{e.Message}</color>");
+            }
         }
 
         private void OnFirebaseInitialized()
