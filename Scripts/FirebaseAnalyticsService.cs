@@ -2,19 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Larje.Core;
+using Larje.Core.Services;
+using UnityEngine;
+#if !UNITY_WEBGL
 using Firebase;
 using Firebase.Messaging;
 using Firebase.Analytics;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
-using Larje.Core;
-using Larje.Core.Services;
-using UnityEngine;
+#endif
 
 namespace Larje.Analytics.Firebase
 {
     [BindService(typeof(IAnalyticsService), typeof(FirebaseAnalyticsService))]
-    public class FirebaseAnalyticsService : Service, IAnalyticsService
+    public class FirebaseAnalyticsService  
+#if !UNITY_WEBGL 
+: Service IAnalyticsService
+#endif
     {
         [SerializeField] private bool useRemoteConfig;
         [SerializeField] private bool useCloudMessaging;
@@ -25,7 +30,8 @@ namespace Larje.Analytics.Firebase
         [SerializeField] private string boolKey = "larje_key_bool";
 
         [InjectService] private DataService _dataService;
-        
+
+#if !UNITY_WEBGL
         private DependencyStatus _dependencyStatus = DependencyStatus.UnavailableOther;
         
         public override void Init()
@@ -204,5 +210,6 @@ namespace Larje.Analytics.Firebase
                     break;
             }
         }
+#endif
     }
 }
