@@ -16,9 +16,9 @@ using Firebase.RemoteConfig;
 namespace Larje.Analytics.Firebase
 {
     [BindService(typeof(IAnalyticsService), typeof(FirebaseAnalyticsService))]
-    public class FirebaseAnalyticsService  
+    public class FirebaseAnalyticsService : Service
 #if !UNITY_WEBGL 
-: Service IAnalyticsService
+    IAnalyticsService
 #endif
     {
         [SerializeField] private bool useRemoteConfig;
@@ -31,13 +31,13 @@ namespace Larje.Analytics.Firebase
 
         [InjectService] private DataService _dataService;
 
-#if !UNITY_WEBGL
-        private DependencyStatus _dependencyStatus = DependencyStatus.UnavailableOther;
-        
         public override void Init()
         {
             
         }
+        
+#if !UNITY_WEBGL
+        private DependencyStatus _dependencyStatus = DependencyStatus.UnavailableOther;
 
         public void SendEvent(string eventName)
         {
