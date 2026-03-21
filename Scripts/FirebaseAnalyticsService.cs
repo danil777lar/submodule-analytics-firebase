@@ -132,7 +132,7 @@ namespace Larje.Analytics.Firebase
         private void OnFirebaseInitialized()
         {
             Debug.Log("FIREBASE INITIALIZED");
-            SendEvent($"Start_Session_{_dataService.Data.IternalData.SessionNum}");
+            SendEvent($"Start_Session_{_dataService.SystemData.IternalData.SessionNum}");
 
             InitializeDefaultInstance();
         }
