@@ -18,7 +18,7 @@ namespace Larje.Analytics.Firebase
     [BindService(typeof(IAnalyticsService), typeof(FirebaseAnalyticsService))]
     public class FirebaseAnalyticsService : Service
 #if !UNITY_WEBGL 
-    IAnalyticsService
+    , IAnalyticsService
 #endif
     {
         [SerializeField] private bool useRemoteConfig;
