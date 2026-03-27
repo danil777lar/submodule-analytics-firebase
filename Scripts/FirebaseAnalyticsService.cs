@@ -29,7 +29,7 @@ namespace Larje.Analytics.Firebase
         [SerializeField] private string jsonKey = "larje_key_json";
         [SerializeField] private string boolKey = "larje_key_bool";
 
-        [InjectService] private DataService _dataService;
+        [InjectService] private IDataService _dataService;
 
         public override void Init()
         {
