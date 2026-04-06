@@ -41,10 +41,10 @@ namespace Larje.Analytics.Firebase
 
         public void SendEvent(string eventName)
         {
+            Debug.Log($"<color=yellow>{eventName}</color>");
             try
             {
                 FirebaseAnalytics.LogEvent(eventName);
-                Debug.Log($"<color=yellow>{eventName}</color>");
             }
             catch (Exception e)
             {
